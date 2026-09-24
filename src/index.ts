@@ -1,5 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/server";
-import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
+import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 
 const server = new McpServer(
   {
@@ -14,8 +14,15 @@ const server = new McpServer(
 );
 
 async function main() {
-    const transport = new StdioServerTransport();
+  const transport = new StdioServerTransport();
   await server.connect(transport);
 
+  console.error(
+    "MCP Server Ping is running. Send a ping request to see the response.",
+  );
 }
 
+main().catch((error) => {
+  console.error("Error starting the server:", error);
+  process.exit(1);
+});
