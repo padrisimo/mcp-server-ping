@@ -18,7 +18,7 @@ async function main() {
   await server.connect(transport);
 
   console.error(
-    "MCP Server Ping is running. Send a ping request to see the response.",
+    "pong",
   );
 }
 
