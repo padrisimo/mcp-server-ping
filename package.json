@@ -1,0 +1,26 @@
+{
+  "name": "mcp-server-ping",
+  "version": "1.0.0",
+  "description": "mcp playground",
+  "keywords": [
+    "mcp"
+  ],
+  "homepage": "https://github.com/padrisimo/mcp-server-ping#readme",
+  "bugs": {
+    "url": "https://github.com/padrisimo/mcp-server-ping/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/padrisimo/mcp-server-ping.git"
+  },
+  "license": "ISC",
+  "author": "padrisimo",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^2.1.0"
+  }
+}
