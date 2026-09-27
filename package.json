@@ -24,6 +24,7 @@
     "serve": "npx @modelcontextprotocol/inspector npx tsx src/index.ts"
   },
   "dependencies": {
+    "@epic-web/invariant": "^1.0.0",
     "@modelcontextprotocol/server": "^2.1.0",
     "tsx": "^4.23.15",
     "zod": "^4.6.5"

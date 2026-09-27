@@ -1,3 +1,4 @@
+import { invariant } from "@epic-web/invariant";
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import z from "zod";
@@ -23,11 +24,16 @@ server.registerTool(
       firstNumber: z.number().describe("The first number to add."),
       secondNumber: z.number().describe("The second number to add."),
     }),
-
   },
   async ({ firstNumber, secondNumber }) => {
+    invariant(secondNumber >= 0, "The second number must be non-negative.");
     return {
-      content: [{ type: "text", text: `The sum of ${firstNumber} and ${secondNumber} is ${firstNumber + secondNumber}.` }],
+      content: [
+        {
+          type: "text",
+          text: `The sum of ${firstNumber} and ${secondNumber} is ${firstNumber + secondNumber}.`,
+        },
+      ],
     };
   },
 );
