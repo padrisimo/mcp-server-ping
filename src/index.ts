@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
+import z from "zod";
 
 const server = new McpServer(
   {
@@ -17,11 +18,16 @@ server.registerTool(
   "add",
   {
     title: "Add",
-    description: "Adds the numbers 1 and 2",
+    description: "Add two numbers together.",
+    inputSchema: z.object({
+      firstNumber: z.number().describe("The first number to add."),
+      secondNumber: z.number().describe("The second number to add."),
+    }),
+
   },
-  async () => {
+  async ({ firstNumber, secondNumber }) => {
     return {
-      content: [{ type: "text", text: "The sum of 1 and 2 is 3." }],
+      content: [{ type: "text", text: `The sum of ${firstNumber} and ${secondNumber} is ${firstNumber + secondNumber}.` }],
     };
   },
 );
