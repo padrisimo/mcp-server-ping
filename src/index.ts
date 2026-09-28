@@ -1,50 +1,59 @@
-import { invariant } from "@epic-web/invariant";
 import { McpServer } from "@modelcontextprotocol/server";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
-import z from "zod";
+import { DB } from "./db/index.ts";
+import { initializeResources } from './resources.ts'
+import { initializeTools } from "./tools.ts";
 
-const server = new McpServer(
-  {
-    name: "padrisimo",
-    title: "padrisimo",
-    version: "1.0.0",
-  },
-  {
-    capabilities: { tools: {} },
-    instructions: "This let u solve math problems and give you the answer.",
-  },
-);
+export class PadrisimoMCP {
+  db: DB;
+  server = new McpServer(
+    {
+      name: "padrisimo",
+      title: "Padrisimo",
+      version: "1.0.0",
+    },
+    {
+      capabilities: {
+        tools: {},
+      },
+      instructions: `
+Padrisimo: Personal journaling server with AI-powered organization.
 
-server.registerTool(
-  "add",
-  {
-    title: "Add",
-    description: "Add two numbers together.",
-    inputSchema: z.object({
-      firstNumber: z.number().describe("The first number to add."),
-      secondNumber: z.number().describe("The second number to add."),
-    }),
-  },
-  async ({ firstNumber, secondNumber }) => {
-    invariant(secondNumber >= 0, "The second number must be non-negative.");
-    return {
-      content: [
-        {
-          type: "text",
-          text: `The sum of ${firstNumber} and ${secondNumber} is ${firstNumber + secondNumber}.`,
-        },
-      ],
-    };
-  },
-);
+## Core Workflow
+- Create: \`create_entry\` → \`list_tags\` → \`create_tag\` (if needed) → \`add_tag_to_entry\`
+
+## Best Practices
+- Check \`list_tags\` before creating new tags to avoid duplicates
+- Use \`list_entries\` to find specific entry IDs before \`get_entry\`
+
+## Common Requests
+- "Write in my journal" → \`create_entry\`
+- "Show me my entries" → \`list_entries\` or \`view_journal\`
+- "Organize my entries" → \`list_tags\` then \`create_tag\` and \`add_tag_to_entry\`
+			`.trim(),
+    },
+  );
+
+  constructor(path: string) {
+    this.db = DB.getInstance(path);
+  }
+  async init() {
+    await initializeTools(this);
+    await initializeResources(this);
+  }
+}
 
 async function main() {
+  const agent = new PadrisimoMCP(
+    process.env.PADRISIMO_DB_PATH ?? "./db.sqlite",
+  );
+  await agent.init();
   const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error("Padridrisimo MCP server is running on stdio");
+  await agent.server.connect(transport);
+  console.error("Padrisimo MCP Server running on stdio");
 }
 
 main().catch((error) => {
-  console.error("Error starting the server:", error);
+  console.error("Fatal error in main():", error);
   process.exit(1);
 });
