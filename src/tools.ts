@@ -1,5 +1,6 @@
 import { invariant } from "@epic-web/invariant";
 import { type CallToolResult } from "@modelcontextprotocol/server";
+import { z } from "zod";
 import {
   createEntryInputSchema,
   createTagInputSchema,
@@ -17,7 +18,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Create Entry",
       description: "Create a new journal entry",
-      inputSchema: createEntryInputSchema,
+      inputSchema: z.object(createEntryInputSchema),
     },
     async (entry) => {
       const createdEntry = await agent.db.createEntry(entry);
@@ -45,7 +46,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Get Entry",
       description: "Get a journal entry by ID",
-      inputSchema: entryIdSchema,
+      inputSchema: z.object(entryIdSchema),
     },
     async ({ id }) => {
       const entry = await agent.db.getEntry(id);
@@ -80,7 +81,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
       title: "Update Entry",
       description:
         "Update a journal entry. Fields that are not provided (or set to undefined) will not be updated. Fields that are set to null or any other value will be updated.",
-      inputSchema: updateEntryInputSchema,
+      inputSchema: z.object(updateEntryInputSchema),
     },
     async ({ id, ...updates }) => {
       const existingEntry = await agent.db.getEntry(id);
@@ -102,7 +103,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Delete Entry",
       description: "Delete a journal entry",
-      inputSchema: entryIdSchema,
+      inputSchema: z.object(entryIdSchema),
     },
     async ({ id }) => {
       const existingEntry = await agent.db.getEntry(id);
@@ -124,7 +125,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Create Tag",
       description: "Create a new tag",
-      inputSchema: createTagInputSchema,
+      inputSchema: z.object(createTagInputSchema),
     },
     async (tag) => {
       const createdTag = await agent.db.createTag(tag);
@@ -144,7 +145,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Get Tag",
       description: "Get a tag by ID",
-      inputSchema: tagIdSchema,
+      inputSchema: z.object(tagIdSchema),
     },
     async ({ id }) => {
       const tag = await agent.db.getTag(id);
@@ -175,7 +176,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Update Tag",
       description: "Update a tag",
-      inputSchema: updateTagInputSchema,
+      inputSchema: z.object(updateTagInputSchema),
     },
     async ({ id, ...updates }) => {
       const updatedTag = await agent.db.updateTag(id, updates);
@@ -217,7 +218,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Add Tag to Entry",
       description: "Add a tag to an entry",
-      inputSchema: entryTagIdSchema,
+      inputSchema: z.object(entryTagIdSchema),
     },
     async ({ entryId, tagId }) => {
       const tag = await agent.db.getTag(tagId);

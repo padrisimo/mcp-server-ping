@@ -15,6 +15,7 @@ export class PadrisimoMCP {
     {
       capabilities: {
         tools: {},
+        resources: {},
       },
       instructions: `
 Padrisimo: Personal journaling server with AI-powered organization.
