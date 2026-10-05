@@ -19,9 +19,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "test",
-    "start": "tsx src/index.ts",
-    "dev": "tsx watch src/index.ts",
-    "serve": "tsx src/db/seed.ts && npx @modelcontextprotocol/inspector npx tsx src/index.ts"
+    "start": "npx tsx src/index.ts",
+    "dev": "npx tsx src/db/seed.ts && npx @modelcontextprotocol/inspector npx tsx src/index.ts",
+    "inspect": "npx @modelcontextprotocol/inspector"
   },
   "dependencies": {
     "@epic-web/invariant": "^1.0.0",
