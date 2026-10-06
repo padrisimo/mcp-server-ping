@@ -196,7 +196,7 @@ export async function initializeTools(agent: PadrisimoMCP) {
     {
       title: "Delete Tag",
       description: "Delete a tag",
-      inputSchema: tagIdSchema,
+      inputSchema: z.object(tagIdSchema),
     },
     async ({ id }) => {
       const existingTag = await agent.db.getTag(id);
