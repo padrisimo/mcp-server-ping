@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { DB } from "./index.js";
+import { DB } from "./index.ts";
 
 async function seed() {
   const dbPath = path.join(process.cwd(), "db.sqlite");
